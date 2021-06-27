@@ -23,22 +23,22 @@ repositories {
 }
 
 dependencies {
-    val jacksonVersion = "2.12.3"
-    compileOnly("com.fasterxml.jackson.core", "jackson-databind", jacksonVersion)
-    compileOnly("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
-    compileOnly("org.jetbrains.kotlin", "kotlin-reflect", "1.5.0")
+    compileOnly(kotlin("stdlib-jdk8"))
+    // Ktor server dependencies
+    val ktorVersion = "1.6.0"
+    compileOnly("io.ktor", "ktor-server-core", ktorVersion)
 
     // testing
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit5"))
+    testImplementation("io.ktor", "ktor-server-core", ktorVersion)
+    testImplementation("io.ktor", "ktor-server-test-host", ktorVersion)
     testImplementation(kotlin("stdlib-jdk8"))
+
     testImplementation("io.mockk", "mockk", "1.11.0") // mock framework
     testImplementation("ch.qos.logback", "logback-classic", "1.3.0-alpha5") // logging framework for the tests
 
-    val junitVerion = "5.7.1"
+    val junitVerion = "5.7.2"
     testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVerion) // junit testing framework
     testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVerion) // generated parameters for tests
-
     testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVerion) // testing runtime
 }
 
