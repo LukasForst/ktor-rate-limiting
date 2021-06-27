@@ -1,0 +1,23 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:pw.forst.ktor.ratelimiting////PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/index.html
+$dokka.location:pw.forst.ktor.ratelimiting//DEFAULT_INITIAL_CACHE_SIZE/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-d-e-f-a-u-l-t_-i-n-i-t-i-a-l_-c-a-c-h-e_-s-i-z-e.html
+$dokka.location:pw.forst.ktor.ratelimiting//DEFAULT_PURGE_HIT_DURATION/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-d-e-f-a-u-l-t_-p-u-r-g-e_-h-i-t_-d-u-r-a-t-i-o-n.html
+$dokka.location:pw.forst.ktor.ratelimiting//DEFAULT_PURGE_HIT_SIZE/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-d-e-f-a-u-l-t_-p-u-r-g-e_-h-i-t_-s-i-z-e.html
+$dokka.location:pw.forst.ktor.ratelimiting/LinearRateLimiter///PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-linear-rate-limiter/index.html
+$dokka.location:pw.forst.ktor.ratelimiting/LinearRateLimiter/LinearRateLimiter/#kotlin.Long#java.time.Duration#kotlin.Int#java.time.Duration#kotlin.Function0[java.time.Instant]#kotlin.Int/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-linear-rate-limiter/-linear-rate-limiter.html
+$dokka.location:pw.forst.ktor.ratelimiting/LinearRateLimiter/processRequest/#kotlin.String/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-linear-rate-limiter/process-request.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration///PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/index.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/Configuration/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/-configuration.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/keyExtraction/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/key-extraction.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/limit/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/limit.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/purgeHitDuration/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/purge-hit-duration.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/purgeHitSize/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/purge-hit-size.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/requestExclusion/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/request-exclusion.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Configuration/window/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-configuration/window.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Feature///PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-feature/index.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Feature/install/#io.ktor.application.ApplicationCallPipeline#kotlin.Function1[pw.forst.ktor.ratelimiting.RateLimiting.Configuration,kotlin.Unit]/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-feature/install.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting.Feature/key/#/PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/-feature/key.html
+$dokka.location:pw.forst.ktor.ratelimiting/RateLimiting///PointingToDeclaration/ktor-ratelimiting/pw.forst.ktor.ratelimiting/-rate-limiting/index.html
+pw.forst.ktor.ratelimiting
+
