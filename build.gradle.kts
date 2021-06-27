@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "pw.forst"
-base.archivesBaseName = "ktor-ratelimiting"
+base.archivesName.set("ktor-ratelimiting")
 version = (versioning.info?.tag ?: versioning.info?.lastTag ?: versioning.info?.build) ?: "SNAPSHOT"
 
 repositories {
@@ -65,7 +65,7 @@ tasks {
 
         dokkaSourceSets {
             configureEach {
-                displayName.set("Katlib")
+                displayName.set("Ktor Rate Limiting")
 
                 sourceLink {
                     localDirectory.set(file("src/main/kotlin"))
@@ -100,8 +100,8 @@ publishing {
             artifact(javadocJar)
 
             pom {
-                name.set("Ktor Ratelimiting")
-                description.set("Rate limiting plugin for Ktor")
+                name.set("Ktor Rate Limiting")
+                description.set("Rate Limiting plugin for Ktor")
                 url.set("https://ktor-ratelimiting.forst.pw")
                 packaging = "jar"
                 licenses {
