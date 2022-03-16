@@ -46,5 +46,4 @@ fun Application.minimalExample() {
 ```
 
 For details see [MinimalExampleApp.kt](src/test/kotlin/dev/forst/ktor/ratelimiting/MinimalExampleApp.kt) with this example application
-and [TestMinimalExampleApp.kt](src/test/kotlin/dev/forst/ktor/ratelimiting/TestMinimalExampleApp.kt) which verifies that this app works as  
-expected.
+and [TestMinimalExampleApp.kt](src/test/kotlin/dev/forst/ktor/ratelimiting/TestMinimalExampleApp.kt) which verifies that this app works as expected.
