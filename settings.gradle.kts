@@ -1,4 +1,4 @@
-rootProject.name = "ktor-ratelimiting"
+rootProject.name = "ktor-rate-limiting"
 
 pluginManagement {
     repositories {

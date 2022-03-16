@@ -7,7 +7,7 @@ A simple library that enables Rate Limiting in Ktor.
 Include following in your `build.gradle.kts`:
 
 ```kotlin
-implementation("dev.forst", "ktor-ratelimiting", "1.1.0")
+implementation("dev.forst", "ktor-rate-limiting", "1.1.0")
 ```
 
 ## Usage

@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "dev.forst"
-base.archivesName.set("ktor-ratelimiting")
+base.archivesName.set("ktor-rate-limiting")
 version = (versioning.info?.tag ?: versioning.info?.lastTag ?: versioning.info?.build) ?: "SNAPSHOT"
 
 repositories {
@@ -69,7 +69,7 @@ tasks {
 
                 sourceLink {
                     localDirectory.set(file("src/main/kotlin"))
-                    remoteUrl.set(URL("https://github.com/LukasForst/ktor-ratelimiting/tree/master/src/main/kotlin"))
+                    remoteUrl.set(URL("https://github.com/LukasForst/ktor-rate-limiting/tree/master/src/main/kotlin"))
                     remoteLineSuffix.set("#L")
                 }
             }
@@ -102,7 +102,7 @@ publishing {
             pom {
                 name.set("Ktor Rate Limiting")
                 description.set("Rate Limiting plugin for Ktor")
-                url.set("https://ktor-ratelimiting.forst.dev")
+                url.set("https://ktor-rate-limiting.forst.dev")
                 packaging = "jar"
                 licenses {
                     license {
@@ -118,8 +118,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/LukasForst/ktor-ratelimiting.git")
-                    url.set("https://github.com/LukasForst/ktor-ratelimiting")
+                    connection.set("scm:git:git://github.com/LukasForst/ktor-rate-limiting.git")
+                    url.set("https://github.com/LukasForst/ktor-rate-limiting")
                 }
             }
         }
