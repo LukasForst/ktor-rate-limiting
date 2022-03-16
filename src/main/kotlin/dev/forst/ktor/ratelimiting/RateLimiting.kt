@@ -41,6 +41,9 @@ class RateLimiting private constructor(
          */
         lateinit var window: Duration
 
+        /**
+         * See [extractKey].
+         */
         internal lateinit var keyExtractionFunction: RateLimitKeyExtraction
 
         /**
@@ -51,7 +54,10 @@ class RateLimiting private constructor(
             keyExtractionFunction = body
         }
 
-        lateinit var requestExclusionFunction: RateLimitExclusion
+        /**
+         * See [excludeRequestWhen].
+         */
+        internal lateinit var requestExclusionFunction: RateLimitExclusion
 
         /**
          * Define selector that excludes given route from the rate limiting.

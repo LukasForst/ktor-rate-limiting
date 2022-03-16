@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.atomic.AtomicLong
 
-
 /**
  * Linear implementation of the rate limiting. If [limit] is depleted during the [window]
  * from the first request, it denies access.
@@ -63,8 +62,11 @@ class LinearRateLimiter(
         return rate?.let {
             // log request and check if there are any requests left
             // if no requests are left, return the seconds that the host needs to wait for another request
-            if (it.remainingRequests.decrementAndGet() < 0) it.resetsAt.epochSecond - now.epochSecond
-            else null
+            if (it.remainingRequests.decrementAndGet() < 0) {
+                it.resetsAt.epochSecond - now.epochSecond
+            } else {
+                null
+            }
         }
     }
 
@@ -108,6 +110,9 @@ class LinearRateLimiter(
      * otherwise return [maybeRateLimit].
      */
     private fun rateLimitOrDefault(maybeRateLimit: RateLimit?, now: Instant) =
-        if (maybeRateLimit == null || maybeRateLimit.resetsAt <= now) defaultRate(now)
-        else maybeRateLimit
+        if (maybeRateLimit == null || maybeRateLimit.resetsAt <= now) {
+            defaultRate(now)
+        } else {
+            maybeRateLimit
+        }
 }

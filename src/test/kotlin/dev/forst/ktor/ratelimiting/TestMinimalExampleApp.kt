@@ -1,6 +1,5 @@
 package dev.forst.ktor.ratelimiting
 
-
 import io.ktor.application.Application
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
