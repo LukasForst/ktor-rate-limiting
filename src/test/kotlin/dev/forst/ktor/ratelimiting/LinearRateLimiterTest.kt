@@ -1,4 +1,4 @@
-package pw.forst.ktor.ratelimiting
+package dev.forst.ktor.ratelimiting
 
 import io.mockk.every
 import io.mockk.mockk
@@ -42,7 +42,10 @@ class LinearRateLimiterTest {
         val workers = 10
         val repetitionsPerWorker = 50
         // just to check the parameters, that we can really get denied result
-        assertTrue { limit < (workers + repetitionsPerWorker) }
+        assertTrue {
+            @Suppress("KotlinConstantConditions") // because we sometimes change when testing
+            limit < (workers + repetitionsPerWorker)
+        }
         instance.stressTest(
             workers = workers,
             repetitionsPerWorker = repetitionsPerWorker,
@@ -81,7 +84,7 @@ class LinearRateLimiterTest {
                     repeat(repetitionsPerWorker) {
                         val nextTime = counter.incrementAndGet()
                         val result = limiter.processRequest(hostName)
-                        if (nextTime >= limit) {
+                        if (nextTime > limit) {
                             assertEquals(diffSeconds, result)
                         } else {
                             assertNull(result)

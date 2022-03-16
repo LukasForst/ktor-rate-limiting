@@ -3,18 +3,18 @@ import java.net.URL
 
 
 plugins {
-    kotlin("jvm") version "1.5.20"
+    kotlin("jvm") version "1.6.10"
 
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 
-    id("net.nemerosa.versioning") version "2.14.0"
-    id("org.jetbrains.dokka") version "1.4.32"
-    id("io.gitlab.arturbosch.detekt") version "1.17.0"
+    id("net.nemerosa.versioning") version "2.15.1"
+    id("org.jetbrains.dokka") version "1.6.10"
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
 }
 
-group = "pw.forst"
+group = "dev.forst"
 base.archivesName.set("ktor-ratelimiting")
 version = (versioning.info?.tag ?: versioning.info?.lastTag ?: versioning.info?.build) ?: "SNAPSHOT"
 
@@ -25,27 +25,27 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     // Ktor server dependencies
-    val ktorVersion = "1.6.0"
+    val ktorVersion = "1.6.7"
     compileOnly("io.ktor", "ktor-server-core", ktorVersion)
 
     // testing
     testImplementation("io.ktor", "ktor-server-core", ktorVersion)
     testImplementation("io.ktor", "ktor-server-test-host", ktorVersion)
     testImplementation(kotlin("stdlib-jdk8"))
-
-    testImplementation("io.mockk", "mockk", "1.11.0") // mock framework
     testImplementation("ch.qos.logback", "logback-classic", "1.3.0-alpha5") // logging framework for the tests
 
-    val junitVerion = "5.7.2"
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVerion) // junit testing framework
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVerion) // generated parameters for tests
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVerion) // testing runtime
+    testImplementation("io.mockk", "mockk", "1.11.0") // mock framework
+    testImplementation(kotlin("test"))
+
+    val junitVersion = "5.8.2"
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion) // junit testing framework
+    testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVersion) // generated parameters for tests
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVersion) // testing runtime
 }
 
 detekt {
+    config = files("detekt.yml")
     parallel = true
-    input = files("$rootDir/src")
-    config = files(rootDir.resolve("detekt-config.yml"))
 }
 
 tasks {
@@ -102,7 +102,7 @@ publishing {
             pom {
                 name.set("Ktor Rate Limiting")
                 description.set("Rate Limiting plugin for Ktor")
-                url.set("https://ktor-ratelimiting.forst.pw")
+                url.set("https://ktor-ratelimiting.forst.dev")
                 packaging = "jar"
                 licenses {
                     license {
@@ -114,7 +114,7 @@ publishing {
                     developer {
                         id.set("lukasforst")
                         name.set("Lukas Forst")
-                        email.set("lukas@forst.pw")
+                        email.set("lukas@forst.dev")
                     }
                 }
                 scm {

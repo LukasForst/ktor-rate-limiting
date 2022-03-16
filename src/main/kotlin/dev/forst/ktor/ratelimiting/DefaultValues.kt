@@ -1,4 +1,4 @@
-package pw.forst.ktor.ratelimiting
+package dev.forst.ktor.ratelimiting
 
 import java.time.Duration
 

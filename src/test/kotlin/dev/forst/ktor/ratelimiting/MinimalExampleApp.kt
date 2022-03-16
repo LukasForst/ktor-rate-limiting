@@ -1,20 +1,16 @@
-# Ktor Rate Limiting
+package dev.forst.ktor.ratelimiting
 
-A simple library that enables Rate Limiting in Ktor.
 
-## Installation
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.origin
+import io.ktor.request.path
+import io.ktor.response.respondText
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import java.time.Duration
 
-Include following in your `build.gradle.kts`:
-
-```kotlin
-implementation("dev.forst", "ktor-ratelimiting", "1.1.0")
-```
-
-## Usage
-
-This is minimal implementation of the Ktor app that uses Rate Limiting:
-
-```kotlin
 /**
  * Minimal Ktor application with Rate Limiting enabled.
  */
@@ -43,8 +39,3 @@ fun Application.minimalExample() {
         }
     }
 }
-```
-
-For details see [MinimalExampleApp.kt](src/test/kotlin/dev/forst/ktor/ratelimiting/MinimalExampleApp.kt) with this example application
-and [TestMinimalExampleApp.kt](src/test/kotlin/dev/forst/ktor/ratelimiting/TestMinimalExampleApp.kt) which verifies that this app works as  
-expected.

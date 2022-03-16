@@ -1,4 +1,4 @@
-package pw.forst.ktor.ratelimiting
+package dev.forst.ktor.ratelimiting
 
 import io.ktor.application.ApplicationCall
 import io.ktor.application.ApplicationCallPipeline
@@ -14,15 +14,16 @@ import org.slf4j.LoggerFactory
 import java.time.Duration
 
 typealias RateLimitExclusion = (request: ApplicationRequest) -> Boolean
+typealias RateLimitKeyExtraction = PipelineContext<*, ApplicationCall>.() -> String
 
-private val rateLimitingLogger = LoggerFactory.getLogger("pw.forst.ktor.ratelimiting.RateLimiting")
+private val rateLimitingLogger = LoggerFactory.getLogger("dev.forst.ktor.ratelimiting.RateLimiting")
 
 /**
  * Simple rate limiting implementation using [LinearRateLimiter].
  */
 class RateLimiting private constructor(
     private val rateLimit: LinearRateLimiter,
-    private val keyExtraction: PipelineContext<*, ApplicationCall>.() -> String,
+    private val keyExtraction: RateLimitKeyExtraction,
     private val rateLimitExclusion: RateLimitExclusion
 ) {
 
@@ -40,16 +41,24 @@ class RateLimiting private constructor(
          */
         lateinit var window: Duration
 
+        internal lateinit var keyExtractionFunction: RateLimitKeyExtraction
+
         /**
          * What request property to use as the key in the cache - or in other words, how
          * to identify a single user.
          */
-        lateinit var keyExtraction: PipelineContext<*, ApplicationCall>.() -> String
+        fun extractKey(body: RateLimitKeyExtraction) {
+            keyExtractionFunction = body
+        }
+
+        lateinit var requestExclusionFunction: RateLimitExclusion
 
         /**
          * Define selector that excludes given route from the rate limiting.
          */
-        lateinit var requestExclusion: RateLimitExclusion
+        fun excludeRequestWhen(body: RateLimitExclusion) {
+            requestExclusionFunction = body
+        }
 
         /**
          * See [LinearRateLimiter.purgeHitSize].
@@ -77,7 +86,7 @@ class RateLimiting private constructor(
                 purgeHitSize = config.purgeHitSize,
                 purgeHitDuration = config.purgeHitDuration
             )
-            val rateLimiting = RateLimiting(limiter, config.keyExtraction, config.requestExclusion)
+            val rateLimiting = RateLimiting(limiter, config.keyExtractionFunction, config.requestExclusionFunction)
             // intercept request at the beginning
             pipeline.intercept(ApplicationCallPipeline.Features) {
                 // determine if it is necessary to filter this request or not
@@ -92,7 +101,7 @@ class RateLimiting private constructor(
                 if (retryAfter == null) {
                     proceed()
                 } else {
-                    // at this point we want to deny attacker the request
+                    // at this point we want to deny attacker the request,
                     // but we also do not want to spend any more resources on processing this request
                     // for that reason we don't throw exception, nor return jsons, but rather finish the request here
                     call.response.header("Retry-After", retryAfter)

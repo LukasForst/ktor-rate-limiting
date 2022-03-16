@@ -10,8 +10,8 @@ jobs:
     name: Build & Test - Java ${{ matrix.java }} on ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
-        java: [ 8, 11, 16 ]
+        os: [ windows-latest, ubuntu-latest ]
+        java: [ 8, 17 ]
 
     steps:
       - uses: actions/checkout@v2
