@@ -1,34 +1,31 @@
 package dev.forst.ktor.ratelimiting
 
-import io.ktor.application.Application
-import io.ktor.http.HttpMethod
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.withTestApplication
+import io.ktor.server.application.Application
+import io.ktor.server.testing.testApplication
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class TestMinimalExampleApp {
     @Test
-    fun `test minimal example app works as expected`() {
-        withTestApplication(Application::minimalExample) {
-            // 10 times our request should pass
-            repeat(10) {
-                handleRequest(HttpMethod.Get, "/").apply {
-                    assertEquals(HttpStatusCode.OK, response.status())
-                    assertEquals("Hello localhost", response.content)
-                }
-            }
-            // and then it should be blocked
-            handleRequest(HttpMethod.Get, "/").apply {
-                assertEquals(HttpStatusCode.TooManyRequests, response.status())
-            }
-            // but excluded route should be still available
-            handleRequest(HttpMethod.Get, "/excluded").apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("Hello localhost", response.content)
-            }
+    fun `test minimal example app works as expected`() = testApplication {
+        application(Application::minimalExample)
+        // 10 times our request should pass
+        repeat(10) {
+            val response = client.get("/")
+            assertEquals(HttpStatusCode.OK, response.status)
+            assertEquals("Hello localhost", response.bodyAsText())
         }
+        // and then it should be blocked
+        val blockedResponse = client.get("/")
+        assertEquals(HttpStatusCode.TooManyRequests, blockedResponse.status)
+
+        // but excluded route should be still available
+        val excludedResponse = client.get("/excluded")
+        assertEquals(HttpStatusCode.OK, excludedResponse.status)
+        assertEquals("Hello localhost", excludedResponse.bodyAsText())
     }
 }
 
