@@ -10,7 +10,7 @@ Include following in your `build.gradle.kts`:
 implementation("dev.forst", "ktor-rate-limiting", "1.2.0")
 ```
 
-(versions >= `1.2.0` have implementation for Ktor >= `2.0.0`, use `1.1.0` if you need support for older versions of Ktor.)
+Versions >= `1.2.0` have implementation for Ktor >= `2.0.0`, use `1.1.0` if you need support for older versions of Ktor.
 
 ## Usage
 
