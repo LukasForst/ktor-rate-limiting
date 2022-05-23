@@ -24,11 +24,11 @@ fun Application.minimalExample() {
             window = Duration.ofMinutes(1)
         ) {
             // use host as a key to determine who is who
-            call.request.origin.host
+            request.origin.host
         }
         // and exclude path which ends with "excluded"
         excludeRequestWhen {
-            call.request.path().endsWith("excluded")
+            request.path().endsWith("excluded")
         }
     }
     // now add some routes
