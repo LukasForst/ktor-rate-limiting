@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <title>processRequest</title>
+    <title>rateLimitHit</title>
 <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
 const savedDarkMode = storage ? JSON.parse(storage) : false
 if(savedDarkMode === true){
@@ -12,7 +12,7 @@ if(savedDarkMode === true){
     <div class="navigation-wrapper" id="navigation-wrapper">
       <div id="leftToggler"><span class="icon-toggler"></span></div>
       <div class="library-name"><a href="../../../index.html">ktor-rate-limiting</a></div>
-      <div>1.2.0</div>
+      <div>1.3.0</div>
       <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
       </div>
@@ -22,19 +22,19 @@ if(savedDarkMode === true){
         <div id="sideMenu"></div>
       </div>
       <div id="main">
-        <div class="main-content" id="content" pageIds="ktor-rate-limiting::dev.forst.ktor.ratelimiting/LinearRateLimiter/processRequest/#kotlin.String/PointingToDeclaration//-116505863">
-          <div class="breadcrumbs"><a href="../../../index.html">ktor-rate-limiting</a>/<a href="../index.html">dev.forst.ktor.ratelimiting</a>/<a href="index.html">LinearRateLimiter</a>/<a href="process-request.html">processRequest</a></div>
+        <div class="main-content" id="content" pageIds="ktor-rate-limiting::dev.forst.ktor.ratelimiting/RateLimitingConfiguration/rateLimitHit/#kotlin.coroutines.SuspendFunction3[io.ktor.util.pipeline.PipelineContext[*,io.ktor.server.application.ApplicationCall],kotlin.String,kotlin.Long,kotlin.Unit]/PointingToDeclaration//-116505863">
+          <div class="breadcrumbs"><a href="../../../index.html">ktor-rate-limiting</a>/<a href="../index.html">dev.forst.ktor.ratelimiting</a>/<a href="index.html">RateLimitingConfiguration</a>/<a href="rate-limit-hit.html">rateLimitHit</a></div>
           <div class="cover ">
-            <h1 class="cover"><span>process</span><wbr></wbr><span><span>Request</span></span></h1>
+            <h1 class="cover"><span>rate</span><wbr></wbr><span>Limit</span><wbr></wbr><span><span>Hit</span></span></h1>
           </div>
-          <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="process-request.html"><span class="token function">processRequest</span></a><span class="token punctuation">(</span>remoteHost<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Logs request attempt from the <a href="process-request.html">remoteHost</a>.</p><p class="paragraph">Returns <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a> - the amount of seconds when the next request will be possible - when the <a href="process-request.html">remoteHost</a> has zero requests left and should be filtered.</p><p class="paragraph">Otherwise returns null.</p></div></div>
+          <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="rate-limit-hit.html"><span class="token function">rateLimitHit</span></a><span class="token punctuation">(</span>action<span class="token operator">: </span><a href="../index.html#2061797120%2FClasslikes%2F-116505863">RateLimitHitAction</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Action that is executed when the rate limit is hit.</p><p class="paragraph">Note, that one should execute <span data-unresolved-link="io.ktor.util.pipeline/PipelineContext/finish/#/PointingToDeclaration/">PipelineContext.finish</span> if the pipeline should end and not to proceed further.</p></div></div>
           <h2 class="">Sources</h2>
-          <div class="table" data-togglable="Sources"><a data-name="325737846%2FSource%2F-116505863" anchor-label="https://github.com/LukasForst/ktor-rate-limiting/tree/master/src/main/kotlin/dev/forst/ktor/ratelimiting/LinearRateLimiter.kt#L48" id="325737846%2FSource%2F-116505863" data-filterable-set=":dokkaHtml/main"></a>
+          <div class="table" data-togglable="Sources"><a data-name="-469543147%2FSource%2F-116505863" anchor-label="https://github.com/LukasForst/ktor-rate-limiting/tree/master/src/main/kotlin/dev/forst/ktor/ratelimiting/RateLimiting.kt#L65" id="-469543147%2FSource%2F-116505863" data-filterable-set=":dokkaHtml/main"></a>
             <div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main">
               <div class="main-subrow keyValue ">
                 <div class=""><span class="inline-flex">
-                    <div><a href="https://github.com/LukasForst/ktor-rate-limiting/tree/master/src/main/kotlin/dev/forst/ktor/ratelimiting/LinearRateLimiter.kt#L48">Ktor Rate Limiting source</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="325737846%2FSource%2F-116505863"></span>
+                    <div><a href="https://github.com/LukasForst/ktor-rate-limiting/tree/master/src/main/kotlin/dev/forst/ktor/ratelimiting/RateLimiting.kt#L65">Ktor Rate Limiting source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-469543147%2FSource%2F-116505863"></span>
                       <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                     </span></span></div>
                 <div></div>
