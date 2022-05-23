@@ -3,8 +3,10 @@ package dev.forst.ktor.ratelimiting
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.Hook
+import io.ktor.server.application.PluginBuilder
 import io.ktor.server.application.createApplicationPlugin
-import io.ktor.server.auth.AuthenticationChecked
+import io.ktor.server.application.createRouteScopedPlugin
+import io.ktor.server.application.hooks.CallSetup
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import org.slf4j.LoggerFactory
@@ -79,18 +81,30 @@ class RateLimitingConfiguration {
     /**
      * Determines which hook to use to catch the call.
      *
-     * By default, it intercepts phase after the user was authenticated.
+     * By default, it intercepts the call setup phase.
      */
-    var interceptPhase: Hook<suspend (ApplicationCall) -> Unit> = AuthenticationChecked
+    var interceptPhase: Hook<suspend (ApplicationCall) -> Unit> = CallSetup
 }
 
 /**
- * Simple rate limiting implementation using [LinearRateLimiter].
+ * Simple rate limiting implementation using [LinearRateLimiter] in the application.
  */
 val RateLimiting = createApplicationPlugin(
     name = "RateLimiting",
-    createConfiguration = ::RateLimitingConfiguration
-) {
+    createConfiguration = ::RateLimitingConfiguration,
+    body = { build() }
+)
+
+/**
+ * Simple rate limiting implementation using [LinearRateLimiter] in a single route.
+ */
+val RouteRateLimiting = createRouteScopedPlugin(
+    name = "RateLimiting",
+    createConfiguration = ::RateLimitingConfiguration,
+    body = { build() }
+)
+
+private fun PluginBuilder<RateLimitingConfiguration>.build() {
     val limitersSettings = pluginConfig.rateLimits
 
     val limiter = LinearRateLimiter(
@@ -128,7 +142,6 @@ val RateLimiting = createApplicationPlugin(
         }
     }
 }
-
 
 internal val defaultRateLimitHitAction: RateLimitHitAction = { key, retryAfter ->
     // at this point we want to deny attacker the request,

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong
 /**
  * Linear implementation of the rate limiting.
  */
-internal class LinearRateLimiter(
+class LinearRateLimiter(
     /**
      * Limits for each data, key is the ID of the limiter and the value is
      * limit, how many requests should be allowed, the second value is the duration of the window.

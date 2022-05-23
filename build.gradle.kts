@@ -27,11 +27,9 @@ dependencies {
     // Ktor server dependencies
     val ktorVersion = "2.0.1"
     compileOnly("io.ktor", "ktor-server-core", ktorVersion)
-    compileOnly("io.ktor", "ktor-server-auth", ktorVersion)
 
     // testing
     testImplementation("io.ktor", "ktor-server-core", ktorVersion)
-    testImplementation("io.ktor", "ktor-server-auth", ktorVersion)
     testImplementation("io.ktor", "ktor-server-test-host", ktorVersion)
     testImplementation(kotlin("stdlib-jdk8"))
     testImplementation("ch.qos.logback", "logback-classic", "1.3.0-alpha5") // logging framework for the tests
