@@ -2,6 +2,10 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:dev.forst.ktor.ratelimiting////PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/index.html
 $dokka.location:dev.forst.ktor.ratelimiting//RateLimiting/#/PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-rate-limiting.html
+$dokka.location:dev.forst.ktor.ratelimiting//RouteRateLimiting/#/PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-route-rate-limiting.html
+$dokka.location:dev.forst.ktor.ratelimiting/LinearRateLimiter///PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-linear-rate-limiter/index.html
+$dokka.location:dev.forst.ktor.ratelimiting/LinearRateLimiter/LinearRateLimiter/#kotlin.collections.Map[java.util.UUID,kotlin.Pair[kotlin.Long,java.time.Duration]]#kotlin.Int#java.time.Duration#kotlin.Function0[java.time.Instant]#kotlin.Int/PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-linear-rate-limiter/-linear-rate-limiter.html
+$dokka.location:dev.forst.ktor.ratelimiting/LinearRateLimiter/processRequest/#java.util.UUID#kotlin.String/PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-linear-rate-limiter/process-request.html
 $dokka.location:dev.forst.ktor.ratelimiting/RateLimitingConfiguration///PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-rate-limiting-configuration/index.html
 $dokka.location:dev.forst.ktor.ratelimiting/RateLimitingConfiguration/RateLimitingConfiguration/#/PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-rate-limiting-configuration/-rate-limiting-configuration.html
 $dokka.location:dev.forst.ktor.ratelimiting/RateLimitingConfiguration/excludeRequestWhen/#kotlin.coroutines.SuspendFunction1[io.ktor.server.application.ApplicationCall,kotlin.Boolean]/PointingToDeclaration/ktor-rate-limiting/dev.forst.ktor.ratelimiting/-rate-limiting-configuration/exclude-request-when.html
