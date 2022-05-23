@@ -25,6 +25,8 @@ class LinearRateLimiterTest {
 
     @Test
     fun `test hit the request rate, then reset and then hit again`() {
+        val limitId = UUID.randomUUID()
+
         val limit = 10L
         val window = Duration.ofMinutes(10)
         val now = Instant.now()
@@ -34,8 +36,7 @@ class LinearRateLimiterTest {
         val hostName = "hostUnderTheTest"
 
         val instance = LinearRateLimiter(
-            limit = limit,
-            window = window,
+            limitersSettings = mapOf(limitId to Pair(limit, window)),
             nowProvider = { timeProvider.now() },
         )
 
@@ -47,6 +48,7 @@ class LinearRateLimiterTest {
             limit < (workers + repetitionsPerWorker)
         }
         instance.stressTest(
+            limitId = limitId,
             workers = workers,
             repetitionsPerWorker = repetitionsPerWorker,
             hostName = hostName,
@@ -54,12 +56,13 @@ class LinearRateLimiterTest {
             diffSeconds = diffSeconds
         )
         // verify that the host is still locked out
-        assertEquals(diffSeconds, instance.processRequest(hostName))
+        assertEquals(diffSeconds, instance.processRequest(limitId, hostName))
         // trigger the reset
         val newNow = now.plus(window.plusMinutes(1))
         every { timeProvider.now() } returns newNow
         // verify that the host is now free to run the requests again
         instance.stressTest(
+            limitId = limitId,
             workers = workers,
             repetitionsPerWorker = repetitionsPerWorker,
             hostName = hostName,
@@ -67,12 +70,13 @@ class LinearRateLimiterTest {
             diffSeconds = diffSeconds
         )
         // verify that the host is now locked out again
-        assertEquals(diffSeconds, instance.processRequest(hostName))
+        assertEquals(diffSeconds, instance.processRequest(limitId, hostName))
     }
 
 
+    @Suppress("LongParameterList") // this is a test, we're fine
     private fun LinearRateLimiter.stressTest(
-        workers: Int, repetitionsPerWorker: Int, hostName: String, limit: Long, diffSeconds: Long
+        limitId: UUID, workers: Int, repetitionsPerWorker: Int, hostName: String, limit: Long, diffSeconds: Long
     ) {
         val limiter = this
         val counter = AtomicInteger(0)
@@ -83,7 +87,7 @@ class LinearRateLimiterTest {
                 launch {
                     repeat(repetitionsPerWorker) {
                         val nextTime = counter.incrementAndGet()
-                        val result = limiter.processRequest(hostName)
+                        val result = limiter.processRequest(limitId, hostName)
                         if (nextTime > limit) {
                             assertEquals(diffSeconds, result)
                         } else {
@@ -94,7 +98,7 @@ class LinearRateLimiterTest {
                 // random hosts must have an access
                 launch {
                     repeat(repetitionsPerWorker) {
-                        assertNull(limiter.processRequest(UUID.randomUUID().toString()))
+                        assertNull(limiter.processRequest(limitId, UUID.randomUUID().toString()))
                     }
                 }
             }

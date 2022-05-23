@@ -3,23 +3,20 @@ package dev.forst.ktor.ratelimiting
 import kotlinx.coroutines.sync.Mutex
 import java.time.Duration
 import java.time.Instant
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * Linear implementation of the rate limiting. If [limit] is depleted during the [window]
- * from the first request, it denies access.
+ * Linear implementation of the rate limiting.
  */
-class LinearRateLimiter(
+internal class LinearRateLimiter(
     /**
-     * How many request can the user perform in the [window].
+     * Limits for each data, key is the ID of the limiter and the value is
+     * limit, how many requests should be allowed, the second value is the duration of the window.
      */
-    private val limit: Long,
-    /**
-     * Duration after which the limiter resets.
-     */
-    private val window: Duration,
+    private val limitersSettings: Map<UUID, Pair<Long, Duration>>,
     /**
      * How many records can be stored before the limiter purges the cache.
      */
@@ -46,16 +43,16 @@ class LinearRateLimiter(
     private data class RateLimit(val resetsAt: Instant, val remainingRequests: AtomicLong)
 
     /**
-     * Logs request attempt from the [remoteHost].
+     * Logs request attempt from the [key] with limiter [limitId].
      *
      * Returns [Long] - the amount of seconds when the next request will be possible -
-     * when the [remoteHost] has zero requests left and should be filtered.
+     * when the [key] has zero requests left and should be filtered. Otherwise, returns null.
      *
-     *  Otherwise returns null.
+     * Throws [NoSuchElementException] if the [limitId] is not in [limitersSettings].
      */
-    fun processRequest(remoteHost: String): Long? {
+    fun processRequest(limitId: UUID, key: String): Long? {
         val now = nowProvider()
-        val rate = records.compute(remoteHost) { _, maybeRate -> rateLimitOrDefault(maybeRate, now) }
+        val rate = records.compute(key) { _, maybeRate -> rateLimitOrDefault(maybeRate, now, limitId) }
         // if necessary, cleanup the records
         purgeIfNecessary(now)
         // return current rate limit decision
@@ -101,17 +98,14 @@ class LinearRateLimiter(
         .forEach { records.remove(it) } // try to remove all records that should be purged
 
     /**
-     * Build new [RateLimit] instance from the class parameters.
-     */
-    private fun defaultRate(now: Instant) = RateLimit(now.plus(window), AtomicLong(limit))
-
-    /**
      * Check if limit [maybeRateLimit] exists or should be reset. If so, create new [RateLimit] instance,
      * otherwise return [maybeRateLimit].
      */
-    private fun rateLimitOrDefault(maybeRateLimit: RateLimit?, now: Instant) =
+    private fun rateLimitOrDefault(maybeRateLimit: RateLimit?, now: Instant, limitId: UUID) =
         if (maybeRateLimit == null || maybeRateLimit.resetsAt <= now) {
-            defaultRate(now)
+            val (limit, window) = limitersSettings[limitId]
+                ?: throw NoSuchElementException("No limit with ID $limitId was registered! Can not handle.")
+            RateLimit(now.plus(window), AtomicLong(limit))
         } else {
             maybeRateLimit
         }

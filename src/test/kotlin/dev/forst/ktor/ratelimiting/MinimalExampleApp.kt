@@ -17,15 +17,18 @@ import java.time.Duration
 fun Application.minimalExample() {
     // install feature
     install(RateLimiting) {
-        // allow 10 requests
-        limit = 10
-        // each 1 minute
-        window = Duration.ofMinutes(1)
-        // use host as a key to determine who is who
-        extractKey { call.request.origin.host }
+        registerLimit(
+            // allow 10 requests
+            limit = 10,
+            // each 1 minute
+            window = Duration.ofMinutes(1)
+        ) {
+            // use host as a key to determine who is who
+            call.request.origin.host
+        }
         // and exclude path which ends with "excluded"
         excludeRequestWhen {
-            it.path().endsWith("excluded")
+            call.request.path().endsWith("excluded")
         }
     }
     // now add some routes
@@ -33,7 +36,6 @@ fun Application.minimalExample() {
         get {
             call.respondText("Hello ${call.request.origin.host}")
         }
-
         get("excluded") {
             call.respondText("Hello ${call.request.origin.host}")
         }
