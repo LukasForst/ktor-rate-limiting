@@ -9,16 +9,16 @@ import java.time.Duration
 /**
  * Default value for [LinearRateLimiter.purgeHitSize].
  */
-const val DEFAULT_PURGE_HIT_SIZE: Int = 100
+internal const val DEFAULT_PURGE_HIT_SIZE: Int = 100
 
 /**
  * Default value for [LinearRateLimiter.initialSize].
  */
 @Suppress("KDocUnresolvedReference") // constructor parameter
-const val DEFAULT_INITIAL_CACHE_SIZE: Int = 64
+internal const val DEFAULT_INITIAL_CACHE_SIZE: Int = 64
 
 /**
  * Default value for [LinearRateLimiter.purgeHitDuration].
  */
 @Suppress("MagicNumber")
-val DEFAULT_PURGE_HIT_DURATION: Duration = Duration.ofMinutes(10L)
+internal val DEFAULT_PURGE_HIT_DURATION: Duration = Duration.ofMinutes(10L)

@@ -7,7 +7,7 @@ A simple library that enables Rate Limiting in Ktor.
 Include following in your `build.gradle.kts`:
 
 ```kotlin
-implementation("dev.forst", "ktor-rate-limiting", "1.2.0")
+implementation("dev.forst", "ktor-rate-limiting", "1.3.0")
 ```
 
 Versions >= `1.2.0` have implementation for Ktor >= `2.0.0`, use `1.1.0` if you need support for older versions of Ktor.
@@ -23,15 +23,18 @@ This is minimal implementation of the Ktor app that uses Rate Limiting:
 fun Application.minimalExample() {
     // install feature
     install(RateLimiting) {
-        // allow 10 requests
-        limit = 10
-        // each 1 minute
-        window = Duration.ofMinutes(1)
-        // use host as a key to determine who is who
-        extractKey { call.request.origin.host }
+        registerLimit(
+            // allow 10 requests
+            limit = 10,
+            // each 1 minute
+            window = Duration.ofMinutes(1)
+        ) {
+            // use host as a key to determine who is who
+            call.request.origin.host
+        }
         // and exclude path which ends with "excluded"
         excludeRequestWhen {
-            it.path().endsWith("excluded")
+            call.request.path().endsWith("excluded")
         }
     }
     // now add some routes
@@ -39,7 +42,6 @@ fun Application.minimalExample() {
         get {
             call.respondText("Hello ${call.request.origin.host}")
         }
-
         get("excluded") {
             call.respondText("Hello ${call.request.origin.host}")
         }
