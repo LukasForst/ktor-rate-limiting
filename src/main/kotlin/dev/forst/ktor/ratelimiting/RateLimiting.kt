@@ -2,23 +2,20 @@ package dev.forst.ktor.ratelimiting
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.ApplicationCallPipeline
-import io.ktor.server.application.call
+import io.ktor.server.application.Hook
 import io.ktor.server.application.createApplicationPlugin
+import io.ktor.server.auth.AuthenticationChecked
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
-import io.ktor.util.pipeline.PipelineContext
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.util.UUID
 
-typealias RateLimitExclusion = suspend PipelineContext<*, ApplicationCall>.() -> Boolean
-
 private val rateLimitingLogger = LoggerFactory.getLogger("dev.forst.ktor.ratelimiting.RateLimiting")
 
-typealias RateLimitKeyExtraction = suspend PipelineContext<*, ApplicationCall>.() -> String?
-
-typealias RateLimitHitAction = suspend PipelineContext<*, ApplicationCall>.(key: String, retryAfter: Long) -> Unit
+typealias RateLimitExclusion = suspend ApplicationCall.() -> Boolean
+typealias RateLimitKeyExtraction = suspend ApplicationCall.() -> String?
+typealias RateLimitHitAction = suspend ApplicationCall.(key: String, retryAfter: Long) -> Unit
 
 /**
  * Configuration for the Rate Limiting plugin.
@@ -64,8 +61,6 @@ class RateLimitingConfiguration {
 
     /**
      * Action that is executed when the rate limit is hit.
-     *
-     * Note, that one should execute [PipelineContext.finish] if the pipeline should end and not to proceed further.
      */
     fun rateLimitHit(action: RateLimitHitAction) {
         rateLimitHitActionFunction = action
@@ -80,6 +75,13 @@ class RateLimitingConfiguration {
      * See [LinearRateLimiter.purgeHitDuration].
      */
     var purgeHitDuration: Duration = DEFAULT_PURGE_HIT_DURATION
+
+    /**
+     * Determines which hook to use to catch the call.
+     *
+     * By default, it intercepts phase after the user was authenticated.
+     */
+    var interceptPhase: Hook<suspend (ApplicationCall) -> Unit> = AuthenticationChecked
 }
 
 /**
@@ -99,17 +101,17 @@ val RateLimiting = createApplicationPlugin(
     val extractors = limitersSettings.mapValues { (_, value) -> value.third }
     val rateLimitExclusion = pluginConfig.requestExclusionFunction
     val rateLimitHit = pluginConfig.rateLimitHitActionFunction
-
+    val phase = pluginConfig.interceptPhase
     // now install plugin
-    application.intercept(ApplicationCallPipeline.Plugins) {
+    // we want to guarantee that the auth is ready
+    on(phase) { call ->
         // determine if it is necessary to filter this request or not
-        if (rateLimitExclusion(this)) {
-            proceed()
-            return@intercept
+        if (call.rateLimitExclusion()) {
+            return@on
         }
         // use all extractors to find out if we need to retry
         val limitResult = extractors.firstMappingNotNullOrNull { (extractorId, keyExtraction) ->
-            val key = keyExtraction(this)
+            val key = call.keyExtraction()
             if (key != null) {
                 limiter.processRequest(extractorId, key)?.let { key to it }
             } else {
@@ -119,10 +121,10 @@ val RateLimiting = createApplicationPlugin(
 
         // if no limitResult is defined, proceed in the request pipeline
         if (limitResult == null) {
-            proceed()
+            return@on
         } else {
             val (key, retryAfter) = limitResult
-            rateLimitHit(key, retryAfter)
+            call.rateLimitHit(key, retryAfter)
         }
     }
 }
@@ -132,9 +134,7 @@ internal val defaultRateLimitHitAction: RateLimitHitAction = { key, retryAfter -
     // at this point we want to deny attacker the request,
     // but we also do not want to spend any more resources on processing this request
     // for that reason we don't throw exception, nor return jsons, but rather finish the request here
-    call.response.header("Retry-After", retryAfter)
-    call.respond(HttpStatusCode.TooManyRequests)
+    response.header("Retry-After", retryAfter)
+    respond(HttpStatusCode.TooManyRequests)
     rateLimitingLogger.warn("Rate limit hit for key \"$key\" - retry after ${retryAfter}s.")
-    // finish the request and do not proceed to next step
-    finish()
 }
