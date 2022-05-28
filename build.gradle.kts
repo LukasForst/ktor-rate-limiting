@@ -25,7 +25,7 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     // Ktor server dependencies
-    val ktorVersion = "2.0.1"
+    val ktorVersion = "2.0.2"
     compileOnly("io.ktor", "ktor-server-core", ktorVersion)
 
     // testing
