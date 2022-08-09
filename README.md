@@ -1,6 +1,9 @@
 # Ktor Rate Limiting
 
-A simple library that enables Rate Limiting in Ktor.
+A simple library that enables Rate Limiting in Ktor. 
+
+## Notice:
+Active development was moved to [LukasForst/ktor-plugins](https://github.com/LukasForst/ktor-plugins/) repository.
 
 ## Installation
 
